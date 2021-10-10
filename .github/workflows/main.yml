@@ -73,8 +73,7 @@ jobs:
           cd python-wheel
           ls
           python --version
-          python -m pip install --no-index --find-links . mapscript
-          pip install --no-index --find-links . pythonfmu
+          python -m pip  install --no-index --find-links . pythonfmu
           python -m pytest --pyargs pythonfmu
           cd ..
         shell: bash -l {0}
