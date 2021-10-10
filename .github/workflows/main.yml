@@ -11,7 +11,6 @@ on:
 jobs:
 
   build:
-    needs: build-wrapper
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
