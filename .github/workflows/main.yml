@@ -9,13 +9,16 @@ on:
       - '*'
 
 jobs:
-  build-wrapper:
 
+  build:
+    needs: build-wrapper
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2019]
-    
+        os: [ubuntu-18.04, windows-2019]
+        python-version: [3.7, 3.8, 3.9]
+    timeout-minutes: 20
+
     steps:
       - uses: actions/checkout@v2
 
@@ -24,48 +27,6 @@ jobs:
         with:
           python-version: '3.x'
           architecture: 'x64'
-
-      - name: Compile wrapper on Windows
-        if: startsWith(runner.os, 'Windows')
-        run: |
-          mkdir tmp-build
-          cd tmp-build
-          cmake $Env:github_workspace/pythonfmu/pythonfmu-export -DCMAKE_BUILD_TYPE=Release -A x64
-          cmake --build . --config Release
-          cd ..
-
-      - name: Compile wrapper on Linux / macOS
-        if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
-        run: |
-          mkdir tmp-build
-          cd tmp-build
-          cmake $GITHUB_WORKSPACE/pythonfmu/pythonfmu-export -DCMAKE_BUILD_TYPE=Release
-          cmake --build . --config Release
-          cd ..
-
-      - name: Archive wrapper library
-        uses: actions/upload-artifact@v2
-        with:
-          name: lib-wrapper
-          path: pythonfmu/resources
-
-  build-python:
-    needs: build-wrapper
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Setup Python 3.x
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-          architecture: 'x64'
-
-      - name: Download wrappers
-        uses: actions/download-artifact@v1
-        with:
-          name: lib-wrapper
-          path: pythonfmu/resources
     
       - name: Build distribution artifacts
         run: |
