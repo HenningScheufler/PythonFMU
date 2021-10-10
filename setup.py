@@ -7,6 +7,7 @@ cwd = os.getcwd()
 print("platform.system()",platform.system())
 print("os.name",os.name)
 WINDOWS = (platform.system() == 'Windows')
+print("on WINDOWS.name",WINDOWS)
 
 class CMakeExtension(Extension):
     def __init__(self, name, sourcedir=''):
@@ -20,8 +21,10 @@ class CMakeExtension(Extension):
                 '../pythonfmu/pythonfmu-export',
                 '-DCMAKE_BUILD_TYPE={}'.format(build_type)
             ]
+            print("cmake_args",cmake_args)
             if WINDOWS:
                 cmake_args.append('-A x64')
+            print("cmake_args after windows",cmake_args)
             os.chdir(os.path.join(cwd,"tmp-build"))
             subprocess.check_call(cmake_args)
             cmake_args_build = [
@@ -30,7 +33,8 @@ class CMakeExtension(Extension):
                 '.'
             ]
             if WINDOWS:
-                cmake_args.append('--config Release')
+                cmake_args_build.append('--config Release')
+            print("cmake_args_build after windows",cmake_args)
             subprocess.check_call(cmake_args_build)
             os.chdir("..")
 
