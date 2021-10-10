@@ -4,6 +4,8 @@ from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
 cwd = os.getcwd()
+print("platform.system()",platform.system())
+print("os.name",os.name)
 WINDOWS = (platform.system() == 'Windows')
 
 class CMakeExtension(Extension):
