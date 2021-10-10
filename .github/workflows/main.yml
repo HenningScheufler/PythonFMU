@@ -13,6 +13,7 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-18.04, windows-2019]
         python-version: [3.7, 3.8, 3.9]
@@ -29,8 +30,10 @@ jobs:
     
       - name: Build distribution artifacts
         run: |
+          python --version
           python -m pip install setuptools wheel
           python setup.py sdist bdist_wheel
+          ls dist
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v1
@@ -42,12 +45,10 @@ jobs:
     needs: build
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-20.04, windows-2019]
         python-version: [3.7, 3.8, 3.9]
-        exclude:
-          - os: ubuntu-20.04
-            python-version: 3.7
     timeout-minutes: 20
 
     steps:
