@@ -1,10 +1,10 @@
-import os, pathlib
+import os, pathlib, platform
 import subprocess
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
 cwd = os.getcwd()
-WINDOWS = (os.name == 'nt')
+WINDOWS = (platform.system() == 'Windows')
 
 class CMakeExtension(Extension):
     def __init__(self, name, sourcedir=''):
