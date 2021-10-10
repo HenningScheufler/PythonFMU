@@ -71,7 +71,7 @@ jobs:
           # Install test dependencies - update environment.yml if they changed
           conda env update --name=test --file=environment.yml
           cd python-wheel
-          python -m pip install pythonfmu*.whl
+          python -m pip install --no-index --find-links=dist mapscript
           python -m pytest --pyargs pythonfmu
           cd ..
         shell: bash -l {0}
